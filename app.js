@@ -20,12 +20,18 @@ const CarSchema = new mongoose.Schema({
   }
 });
 
+CarSchema.pre('save', async function(){
+  this.model = await this.model.toUpperCase();
+});
+
 const Car = mongoose.model('Car', CarSchema);
 
 //validation will catch an error, because year is not between the range specified
 try{
-  let ferrari = Car.create({model: 'ferrari 458', year: 2030});
+  let ferrari = Car.create({model: 'ferrari 458', year: 2010});
+  console.log(ferrari)
   
-}catch(error){
+}
+catch(error){
   console.log(error);
 }
