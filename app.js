@@ -1,9 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+const router = express.Router();
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mongoose-test');
 mongoose.Promise = global.Promise;
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.listen(3000, () => {
   console.log('Server On!')
@@ -26,12 +32,35 @@ CarSchema.pre('save', async function(){
 
 const Car = mongoose.model('Car', CarSchema);
 
-//validation will catch an error, because year is not between the range specified
-try{
-  let ferrari = Car.create({model: 'ferrari 458', year: 2010});
-  console.log(ferrari)
-  
-}
-catch(error){
-  console.log(error);
-}
+
+router.post('/', async (request, response) => {
+  try{
+    const car = await Car.create(request.body);
+    response.send({car});
+    
+  }
+  catch(error){
+    response.status(400).send({ error: 'error'})
+  }  
+});
+
+router.get('/', async (request, response) => {
+  try{
+     Car.find({}, (error, results) => {
+      if(error){
+          return response.status(400).send({error: 'something is wrong...'})
+      }
+
+      response.send({ results });
+
+    });
+
+
+  }
+  catch (error){
+    response.status(400).send({error: 'something is wrong...'})
+  }
+});
+
+
+app.use(router)
