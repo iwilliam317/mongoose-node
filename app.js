@@ -46,20 +46,32 @@ router.post('/', async (request, response) => {
 
 router.get('/', async (request, response) => {
   try{
-     Car.find({}, (error, results) => {
-      if(error){
-          return response.status(400).send({error: 'something is wrong...'})
-      }
+
+    //QUERY WITH CALLBACK
+
+    //  Car.find({}, (error, results) => {
+    //   if(error){
+    //       return response.status(400).send({error: 'something is wrong...'})
+    //   }
+    //   response.send({ results });
+    // });
+
+    //QUERY WITH NO CALLBACK
+    const cars = Car.find({});
+
+    cars.select('model');
+
+    cars.exec((error, results) => {
+      if(error)
+        return response.status(400).send({error: error})
 
       response.send({ results });
-
     });
-
-
   }
   catch (error){
     response.status(400).send({error: 'something is wrong...'})
   }
+
 });
 
 
