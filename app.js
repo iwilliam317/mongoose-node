@@ -35,8 +35,19 @@ const Car = mongoose.model('Car', CarSchema);
 
 router.post('/', async (request, response) => {
   try{
-    const car = await Car.create(request.body);
-    response.send({car});
+    //CREATE IS CALLED DIRECT WITH THE MODEL
+    // const car = await Car.create(request.body);
+    // response.send({car});
+
+    //SAVE IS CALLED FROM THE INSTANCE
+    const car = new Car(request.body);
+    car.save((error, result) => {
+      if (error)
+        return response.status(400).send({ error: error });
+
+      response.send(car);
+
+    });
     
   }
   catch(error){
@@ -63,7 +74,7 @@ router.get('/', async (request, response) => {
 
     cars.exec((error, results) => {
       if(error)
-        return response.status(400).send({error: error})
+        return response.status(400).send({ error: error })
 
       response.send({ results });
     });
