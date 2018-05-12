@@ -23,6 +23,11 @@ const CarSchema = new mongoose.Schema({
     type: Number,
     min: 1990,
     max: 2018
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['Sportive', 'SUV', 'Pick-up', 'Hach']
   }
 });
 
@@ -43,7 +48,7 @@ router.post('/', async (request, response) => {
     const car = new Car(request.body);
     car.save((error, result) => {
       if (error)
-        return response.status(400).send({ error: error });
+        return response.status(400).send({ error: error.message });
 
       response.send(car);
 
@@ -70,7 +75,7 @@ router.get('/', async (request, response) => {
     //QUERY WITH NO CALLBACK
     const cars = Car.find({});
 
-    cars.select('model');
+    cars.select('model category');
 
     cars.exec((error, results) => {
       if(error)
