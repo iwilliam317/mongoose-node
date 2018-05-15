@@ -38,7 +38,7 @@ CarSchema.pre('save', async function(){
 const Car = mongoose.model('Car', CarSchema);
 
 
-router.post('/', async (request, response) => {
+router.post('/cars', async (request, response) => {
   try{
     //CREATE IS CALLED DIRECT WITH THE MODEL
     // const car = await Car.create(request.body);
@@ -60,7 +60,7 @@ router.post('/', async (request, response) => {
   }  
 });
 
-router.get('/', async (request, response) => {
+router.get('/cars', async (request, response) => {
   try{
 
     //QUERY WITH CALLBACK
@@ -90,5 +90,32 @@ router.get('/', async (request, response) => {
 
 });
 
+
+router.get('/cars/:id', (request, response) => {
+  try{
+    const id = mongoose.mongo.ObjectId(request.params.id);
+
+    //WITH CALLBACK
+    // Car.findOne({_id : id}, (error, results) => {
+    //   if (error)
+    //     return response.status(404).send({ error: error })
+    //   response.send({ results });
+    // }); 
+
+    //WITHOUT CALLBACK
+    const car = Car.findOne({ _id: id });
+    car.exec((error, results) => {
+        if (error)
+          return response.status(404).send({ error: error })
+        response.send({ results });
+    });
+
+  }
+
+  catch (error){
+    return response.status(400).send(error);
+  }
+
+});
 
 app.use(router)
