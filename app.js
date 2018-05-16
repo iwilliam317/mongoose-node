@@ -118,4 +118,26 @@ router.get('/cars/:id', (request, response) => {
 
 });
 
+
+router.put('/cars/:id', async (request, response) => {
+  try{
+
+    const id = mongoose.mongo.ObjectId(request.params.id);
+
+    const { model, year, category } = request.body;
+
+    await Car.update( {_id: id }, request.body,  (error, car) => {
+      if (error)
+        return response.status(400).send({ error });
+
+      response.send({ car });
+
+    });
+  }
+  catch (error){
+    return response.status(400).send({ error });
+  }
+
+});
+
 app.use(router)
