@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/mongoose-test');
-mongoose.Promise = global.Promise;
+const mongoose = require('../database');
 
 const CarSchema = new mongoose.Schema({
   model: {
