@@ -14,7 +14,8 @@
     "mocha": "^5.1.1"
   },
   "scripts": {
-    "test": "mocha"
+    "start": "nodemon app.js",
+    "test": "NODE_ENV=TEST mocha --timeout 2000"
   },
   "repository": {
     "type": "git",

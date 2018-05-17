@@ -10,9 +10,11 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
   console.log('Server On!')
 })
+
+module.exports = server;
 
 
 const Car = require('./models/car');
@@ -73,7 +75,7 @@ router.get('/cars', async (request, response) => {
 });
 
 //READ
-router.get('/cars/:id', (request, response) => {
+router.get('/cars/:id', async (request, response) => {
   try{
     const id = mongoose.mongo.ObjectId(request.params.id);
 
@@ -85,8 +87,8 @@ router.get('/cars/:id', (request, response) => {
     // }); 
 
     //WITHOUT CALLBACK
-    const car = Car.findOne({ _id: id });
-    car.exec((error, results) => {
+    const car = await Car.findOne({ _id: id });
+    await car.exec((error, results) => {
         if (error)
           return response.status(404).send({ error: error })
         response.send({ results });
@@ -123,14 +125,15 @@ router.put('/cars/:id', async (request, response) => {
 });
 
 //DELETE
-router.delete('/cars/:id', (request, response) => {
+router.delete('/cars/:id', async (request, response) => {
   const id = mongoose.mongo.ObjectId(request.params.id);
 
-  Car.deleteOne({_id : id}, (error) => {
+  await Car.deleteOne({_id : id}, (error) => {
     if (error)
       return response.status().send({ error });
 
     response.send({ message: 'Successfuly removed! '})
   });
 });
-app.use(router)
+
+app.use(router);
