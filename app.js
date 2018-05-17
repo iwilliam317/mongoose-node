@@ -17,6 +17,7 @@ app.listen(3000, () => {
 
 const Car = require('./models/car');
 
+//CREATE
 router.post('/cars', async (request, response) => {
   try{
     //CREATE IS CALLED DIRECT WITH THE MODEL
@@ -39,6 +40,8 @@ router.post('/cars', async (request, response) => {
   }  
 });
 
+
+//READ
 router.get('/cars', async (request, response) => {
   try{
 
@@ -69,7 +72,7 @@ router.get('/cars', async (request, response) => {
 
 });
 
-
+//READ
 router.get('/cars/:id', (request, response) => {
   try{
     const id = mongoose.mongo.ObjectId(request.params.id);
@@ -97,7 +100,7 @@ router.get('/cars/:id', (request, response) => {
 
 });
 
-
+//UPDATE
 router.put('/cars/:id', async (request, response) => {
   try{
 
@@ -119,4 +122,15 @@ router.put('/cars/:id', async (request, response) => {
 
 });
 
+//DELETE
+router.delete('/cars/:id', (request, response) => {
+  const id = mongoose.mongo.ObjectId(request.params.id);
+
+  Car.deleteOne({_id : id}, (error) => {
+    if (error)
+      return response.status().send({ error });
+
+    response.send({ message: 'Successfuly removed! '})
+  });
+});
 app.use(router)
