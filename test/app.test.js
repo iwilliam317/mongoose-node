@@ -16,18 +16,18 @@ describe('API /cars', () => {
   let car;
 
   describe('GET /cars', () => {
-    before((done) =>{
+    before( done =>{
       // console.log('creating car for tests')
       car = Car.create( { model: 'Ferrari 458 Italia', year: 2017, category: 'Sportive' } )
       done();
     });
 
-    after((done) => {
+    after( done => {
       Car.remove({}, error => {
         if (error)
             console.log('error')
-
       });
+      
       done();
     });
 
