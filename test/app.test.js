@@ -24,6 +24,7 @@ describe('API /cars', () => {
 
     after( done => {
       Car.remove({}, error => {
+         // console.log('cleans car's collection')
         if (error)
             console.log('error')
       });
