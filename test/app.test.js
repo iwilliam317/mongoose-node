@@ -14,11 +14,12 @@ chai.use(chaiHttp);
 describe('API /cars', () => {
 
   let car;
-
+  let x;
   describe('GET /cars', () => {
     before( done =>{
       // console.log('creating car for tests')
       car = Car.create( { model: 'Ferrari 458 Italia', year: 2017, category: 'Sportive' } )
+      x = car._id;
       done();
     });
 
@@ -55,11 +56,20 @@ describe('API /cars', () => {
           // console.log(response.body.results[0].model)
           expect(response.body.results[0].model).to.be.equal('FERRARI 458 ITALIA');
           expect(response.body.results[0].category).to.be.equal('Sportive');
-
           done();
         });
     });
 
+  });
+
+  describe('GET /cars/:id', async () =>{
+    const currentCar = await Car.findOne({ model: 'FERRARI 458 ITALIA'});
+    // const id = currentCar._id;
+    console.log(currentCar)
+    // chai.request(app).get(`/cars/${car._id}`)
+    //   .end((error, response) => {
+    //     console.log(response.body)
+    //   });
   });
 
 })
