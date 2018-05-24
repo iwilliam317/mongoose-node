@@ -14,24 +14,24 @@ chai.use(chaiHttp);
 describe('API /cars', () => {
 
   let car;
-  let x;
-  describe('GET /cars', () => {
-    before( done =>{
-      // console.log('creating car for tests')
-      car = Car.create( { model: 'Ferrari 458 Italia', year: 2017, category: 'Sportive' } )
-      x = car._id;
-      done();
-    });
 
-    after( done => {
-      Car.remove({}, error => {
-         // console.log('cleans car's collection')
-        if (error)
-            console.log('error')
-      });
+  before( done =>{
+    // console.log('creating car for tests')
+    car = Car.create( { model: 'Ferrari 458 Italia', year: 2017, category: 'Sportive' } )
+    done();
+  });
+
+  after( done => {
+    Car.remove({}, error => {
+       // console.log('cleans car's collection')
+      if (error)
+          console.log('error')
+    });
       
       done();
     });
+
+  describe('GET /cars', () => {
 
     it('returns status code 200', done => {
       chai.request(app).get('/cars')
@@ -62,10 +62,15 @@ describe('API /cars', () => {
 
   });
 
-  describe('GET /cars/:id', async () =>{
-    const currentCar = await Car.findOne({ model: 'FERRARI 458 ITALIA'});
+  describe('GET /cars/:id',  () =>{
+    xit('asdasd', async (done) =>{
+      
+      const currentCar = await Car.find({ model: 'FERRARI 458 ITALIA'});
+      console.log(currentCar)
+      done();
+
+    });
     // const id = currentCar._id;
-    console.log(currentCar)
     // chai.request(app).get(`/cars/${car._id}`)
     //   .end((error, response) => {
     //     console.log(response.body)
