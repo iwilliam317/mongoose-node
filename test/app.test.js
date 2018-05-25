@@ -63,18 +63,33 @@ describe('API /cars', () => {
   });
 
   describe('GET /cars/:id',  () =>{
+    // working on it
     xit('asdasd', async (done) =>{
       
-      const currentCar = await Car.find({ model: 'FERRARI 458 ITALIA'});
-      console.log(currentCar)
-      done();
+      try{
+        const currentCar = await Car.findOne({ model: 'FERRARI 458 ITALIA'});
+          console.log(currentCar._id)
+          const {_id } = result;
+      
+
+        chai.request(app).get(`/cars/${_id}`)
+          .end((error, response) => {
+            console.log(response.body.results.model)
+            // expect(response.body.results.model).to.be.equal('FERRARI 458 ITALIA');
+             done();
+          });
+
+      }
+      catch{
+        
+      }
+      // console.log(currentCar);
+      // console.log(`/cars/${_id}`);
+
+     
 
     });
     // const id = currentCar._id;
-    // chai.request(app).get(`/cars/${car._id}`)
-    //   .end((error, response) => {
-    //     console.log(response.body)
-    //   });
   });
 
 })

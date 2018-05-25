@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "nodemon app.js",
-    "test": "NODE_ENV=TEST mocha --timeout 7000"
+    "test": "NODE_ENV=TEST mocha --timeout 30000"
   },
   "repository": {
     "type": "git",
