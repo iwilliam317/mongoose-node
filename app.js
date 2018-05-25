@@ -78,21 +78,23 @@ router.get('/cars', async (request, response) => {
 router.get('/cars/:id', async (request, response) => {
   try{
     const id = mongoose.mongo.ObjectId(request.params.id);
-    
+
     //WITH CALLBACK
-    Car.findOne({_id : id}, (error, results) => {
-      if (error)
-        return response.status(404).send({ error: error })
-      response.send({ results });
-    }); 
+    // Car.findOne({_id : id}, (error, results) => {
+    //   if (error)
+    //     return response.status(404).send({ error: error })
+    //   response.send({ results });
+    // }); 
 
     //WITHOUT CALLBACK
-    // const car = await Car.findOne({ _id: id });
-    // await car.exec((error, results) => {
-    //     if (error)
-    //       return response.status(404).send({ error: error })
-    //     response.send({ results });
-    // });
+    // console.log(id)
+    const car = await Car.find({ _id: id });
+    // console.log(car)
+    if (!car)
+      return response.status(404).send({ error: 'Car not found' });
+
+    response.send({car})
+
 
   }
 
